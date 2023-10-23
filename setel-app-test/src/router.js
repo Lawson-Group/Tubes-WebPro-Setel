@@ -4,6 +4,8 @@ import LoginPage from './components/LoginPage.vue';
 import DashboardPage from './components/DashboardPage.vue'
 import InventoryPageVue from './components/InventoryPage.vue';
 import ReportPageVue from './components/ReportPage.vue';
+import FeedbackPageVue from './components/FeedbackPage.vue';
+
 
 const routes = [
   {
@@ -30,6 +32,11 @@ const routes = [
     path: '/ReportPage',
     name: 'ReportPage',
     component: ReportPage
+  },
+  {
+    path: '/FeedbackPage',
+    name: 'FeedbackPage',
+    component: FeedbackPage
   }
 ];
 
