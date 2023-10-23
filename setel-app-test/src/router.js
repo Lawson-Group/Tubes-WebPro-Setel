@@ -3,6 +3,7 @@ import LandingPage from './components/LandingPage.vue';
 import LoginPage from './components/LoginPage.vue';
 import DashboardPage from './components/DashboardPage.vue'
 import InventoryPageVue from './components/InventoryPage.vue';
+import ReportPageVue from './components/ReportPage.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/InventoryPage',
     name: 'InventoryPage',
     component: InventoryPage
+  },
+  {
+    path: '/ReportPage',
+    name: 'ReportPage',
+    component: ReportPage
   }
 ];
 
