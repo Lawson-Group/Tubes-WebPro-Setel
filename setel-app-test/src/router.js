@@ -2,14 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LandingPage from './components/LandingPage.vue';
 import LoginPage from './components/LoginPage.vue';
 import DashboardPage from './components/DashboardPage.vue'
-import InventoryPageVue from './components/InventoryPage.vue';
-import ReportPageVue from './components/ReportPage.vue';
-import FeedbackPageVue from './components/FeedbackPage.vue';
+import InventoryPage from './components/InventoryPage.vue';
+import ReportPage from './components/ReportPage.vue';
+import FeedbackPage from './components/FeedbackPage.vue';
 
 
 const routes = [
   {
-    path: '/LandingPage',
+    path: '/',
     name: 'LandingPage',
     component: LandingPage
   },

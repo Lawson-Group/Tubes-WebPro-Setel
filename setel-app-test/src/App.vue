@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     showNavbar() {
-      const navbarRoutes = ['DashboardPage'];
+      const navbarRoutes = ['DashboardPage', 'InventoryPage', 'ReportPage', 'FeedbackPage'];
       return navbarRoutes.includes(this.$route.name);
     }
   },

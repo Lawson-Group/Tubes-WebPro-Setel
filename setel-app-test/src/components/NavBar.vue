@@ -1,53 +1,44 @@
 <template>
-  <v-layout>
-    <v-navigation-drawer
-      v-model="drawer"
-      :rail="rail"
-      @click="rail = false"
-    >
-      <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/women/81.jpg"
-        title="Admin Setel"
-        @click.stop="rail = !rail"
-        nav>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-        <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
-      </v-list>
-
-      <template v-slot:append>
-        <div class="pa-2">
+  <v-card>
+    <v-layout>
+      <v-navigation-drawer
+        permanent
+        location="left"
+        color="red-darken-4"
+      >
+        <template v-slot:prepend>
           <v-list-item
-            prepend-icon="mdi-logout"
-            title="Logout"
-            value="logout"
+            lines="two"
+            prepend-icon="mdi-account-circle-outline"
+            title="Jane Smith"
+            subtitle="Logged in"
           ></v-list-item>
-        </div>
-      </template>
-    </v-navigation-drawer>
-    <v-main style="height: 100vh;"></v-main>
-  </v-layout>
+        </template>
+
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item prepend-icon="mdi-home-outline" title="Dashboard" value="dashboard" to="/DashboardPage" active-class="active-item"></v-list-item>
+          <v-list-item prepend-icon="mdi-inbox" title="Inventory" value="inventory" to="/InventoryPage" active-class="active-item"></v-list-item>
+          <v-list-item prepend-icon="mdi-chart-line" title="Report" value="report" to="/ReportPage" active-class="active-item"></v-list-item>
+          <v-list-item prepend-icon="mdi-message-alert" title="Feedback" value="feedback" to="/FeedbackPage" active-class="active-item"></v-list-item>
+        </v-list>
+
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-list-item prepend-icon="mdi-logout" title="Logout" value="logout"></v-list-item>
+          </div>
+        </template>
+
+      </v-navigation-drawer>
+      <v-main style="height: 100vh"></v-main>
+    </v-layout>
+  </v-card>
 </template>
 
-<script>
-
-export default {
-data () {
-return {
-  drawer: true,
-  rail: true,
+<style>
+.active-item {
+  color: red;
+  background-color: white;
 }
-},
-props: {
-rail: {
-type: Boolean,
-required: true
- }
-}
-}
-</script>
+</style>
