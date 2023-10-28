@@ -6,22 +6,22 @@
         <div class="feedback-list">
           <div class="feedback-item" v-for="feedback in feedbacks" :key="feedback.id">
             <div class="feedback-profile">
-              <v-avatar class="profile-icon" size="72" color="#A32929">
+              <v-avatar class="profile-icon" size="60" color="#A32929">
                 <v-icon>
                   mdi-account-circle-outline
                 </v-icon>
               </v-avatar>
               <div class="profile-info">
-                <div class="profile-nim-name" style="font-size: 30px; color: #A32929; margin-bottom: 5px;">
+                <div class="profile-nim-name" style="font-size: 18px; color: #A32929; margin-bottom: 5px;">
                   {{ feedback.nim }} - {{ feedback.username }}
                 </div>
-                <div class="time-ago" style="font-size: 20px; color: #AE5C5C; margin-bottom: 5px;">
+                <div class="time-ago" style="font-size: 15px; color: #AE5C5C; margin-bottom: 5px;">
                   {{ getTimeAgo(feedback.timestamp) }}
                 </div>
                 <div class="separator">
                   <div class="separator-line"></div>
                 </div>
-                <div class="feedback-text" style="font-size: 24px;">
+                <div class="feedback-text" style="font-size: 16px;">
                   {{ feedback.text }}
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default {
 
 <style scoped>
 .feedback-title {
-  font-size: 48px;
+  font-size: 30px;
   text-align: center;
   margin-top: 20px;
   font-weight: bold;
@@ -149,14 +149,14 @@ export default {
 
 .profile-nim-name {
   margin-bottom: 10px;
-  font-size: 30px;
+  font-size: 18px;
   font-family: 'Inter', sans-serif;
   font-weight: bold;
 }
 
 time-ago {
   margin-bottom: 10px;
-  font-size: 20px;
+  font-size: 15px;
   font-family: 'Inter', sans-serif;
   font-weight: bold;
 }
@@ -168,13 +168,14 @@ time-ago {
 }
 
 .separator-line {
-  border-bottom: 2px solid #000;
+  border-bottom: 1px solid #000;
   width: 100%;
 }
 
 .feedback-text {
-  font-size: 24px;
+  font-size: 16px;
   font-family: 'Inter', sans-serif;
   text-align: left;
 }
 </style>
+
