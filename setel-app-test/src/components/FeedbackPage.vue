@@ -42,7 +42,7 @@ export default {
           id: 1,
           nim: '1302213000',
           username: 'Aerichanie',
-          timestamp: new Date(),
+          timestamp: new Date('2023-10-31T15:03:19'),
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
         },
 
@@ -50,7 +50,7 @@ export default {
           id: 2,
           nim: '1204190002',
           username: 'Karinater Yoo',
-          timestamp: new Date(),
+          timestamp: new Date('2023-10-29T14:00:00'),
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
         },
 
@@ -58,7 +58,7 @@ export default {
           id: 3,
           nim: '16531733018',
           username: 'Ningningguang',
-          timestamp: new Date(),
+          timestamp: new Date('2023-10-28T17:04:11'),
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         },
 
@@ -66,7 +66,7 @@ export default {
           id: 4,
           nim: '1282303218',
           username: 'Huangre',
-          timestamp: new Date(),
+          timestamp: new Date('2023-10-27T12:57:34'),
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
         },
 
@@ -74,7 +74,7 @@ export default {
           id: 5,
           nim: '1281999216',
           username: 'Mark',
-          timestamp: new Date(),
+          timestamp: new Date('2023-10-25T10:00:00'),
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         },
       ],
