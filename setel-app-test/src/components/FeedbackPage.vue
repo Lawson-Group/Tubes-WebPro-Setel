@@ -6,12 +6,12 @@
         <div class="feedback-list">
           <div class="feedback-item" v-for="feedback in feedbacks" :key="feedback.id">
             <div class="feedback-profile">
-              <v-avatar class="profile-icon" size="60" color="#A32929">
-                <v-icon>
+              <v-avatar class="profile-icon mx-4" size="50" color="#A32929">
+                <v-icon size="x-large">
                   mdi-account-circle-outline
                 </v-icon>
               </v-avatar>
-              <div class="profile-info">
+              <div class="profile-info" style="padding-right: 10%;">
                 <div class="profile-nim-name" style="font-size: 18px; color: #A32929; margin-bottom: 5px;">
                   {{ feedback.nim }} - {{ feedback.username }}
                 </div>
@@ -123,7 +123,7 @@ export default {
   border: 1px solid #000;
   margin: 10px 0;
   padding: 10px;
-  border-radius: 30px;
+  border-radius: 10px;
   display: flex;
   flex-direction: row;
   width: 100%;
