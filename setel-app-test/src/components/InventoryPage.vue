@@ -1,206 +1,138 @@
 <template>
-    <v-data-table
-        :headers="headers"
-        :items="vehicles"
-        item-value="name"
-        class="elevation-1"
-    >
-        <template v-slot:top>
-            <v-toolbar flat>
-            <v-toolbar-title>Data Kendaraan</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="500px">
-                <template v-slot:activator="{props}">
-                    <v-btn color="#B11116" dark class="mb-2" v-bind="props" variant="outlined">
-                        New Data
-                    </v-btn>
-                </template>
-            
-                <v-card>
-                    <v-card-title>
-                        <span class="text-h5">{{ formTitle }}</span>
-                    </v-card-title>
+    <v-container>
+        <v-container-title style="font-weight: bold; align: center;">Inventory Kendaraan</v-container-title>
+        <v-btn color="#B11116" fab dark right @click="showAddModal" style="position: fixed; top: 10px; right: 10px;">
+            + Add Data
+        </v-btn>
+        
+        <v-table fixed-header style="padding-top: 15px;">
+            <thead>
+                <tr class="text-center">
+                    <th>Nomor Unit</th>
+                    <th>Jenis Kendaraan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in items" :key="index">
+                    <td>{{ item.nomorUnit }}</td>
+                    <td>{{ item.jenisKendaraan }}</td>
+                    <td>{{ item.status }}</td>
+                    <td>
+                        <button @click="editItem(index)" style="padding-right: 10%;">
+                            <v-icon>mdi-pencil</v-icon>
+                        </button>
+                        <button @click="confirmDelete(index)">
+                            <v-icon>mdi-delete</v-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </v-table>
 
-                    <v-card-text>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        v-model="editedItem.nomor"
-                                        label="Nomor Unit"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        v-model="editedItem.jenis"
-                                        label="Jenis Kendaraan"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        v-model="editedItem.status"
-                                        label="Status"
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-card-text>
-
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue-darken-1" variant="text" @click="close">Cancel</v-btn>
-                        <v-btn color="blue-darken-1" variant="text" @click="save">Save</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            </v-toolbar>
-        </template>
-
-        <!-- <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-dialog v-model="showAdd" max-width="500">
             <v-card>
-                <v-card-title class="text-h5">
-                    Yakin hapus data ini?
-                </v-card-title>
-
+                <v-card-title>Enter New Data</v-card-title>
+                <v-card-text>
+                    <v-text-field v-model="newItem.nomorUnit" label="Nomor Unit"></v-text-field>
+                    <v-select v-model="newItem.jenisKendaraan" :items="['Sepeda', 'Skuter']" label="Jenis Kendaraan"></v-select>
+                    <v-select v-model="newItem.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
+                </v-card-text>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">Ya</v-btn>
-                    <v-spacer></v-spacer>
+                    <v-btn @click="addItem" color="primary">Simpan</v-btn>
+                    <v-btn @click="showAdd = false" color="error">Batal</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog> -->
-        <template v-slot:items="props">
-            <v-btn @click="editItem(props.item)">mdi-pencil</v-btn>
-            <v-btn @click="deleteItem(props.item)">mdi-delete</v-btn>
-        </template>
-    </v-data-table>
+        </v-dialog>
+        
+        <v-dialog v-model="showEdit" max-width="500">
+            <v-card>
+                <v-card-title>
+                    Edit Data
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field v-model="editItemData.nomorUnit" label="Nomor Unit"></v-text-field>
+                    <v-select v-model="editItemData.jenisKendaraan" :items="['Sepeda', 'Skuter']" label="Jenis Kendaraan"></v-select>
+                    <v-select v-model="editItemData.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn @click="saveEdit" color="primary">Simpan Perubahan</v-btn>
+                    <v-btn @click="showEdit = false" color="error">Batal</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="showDelete" class="d-flex align-center">
+            <v-card width="500px" class="mx-auto">
+                <v-card-title>
+                    Konfirmasi Hapus Data
+                </v-card-title>
+                <v-card-text>
+                    Apakah Anda yakin ingin menghapus data ini?
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn @click="deleteItem" color="error">Ya</v-btn>
+                    <v-btn @click="cancelDelete" color="primary">Tidak</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-container>
 </template>
 
 <script>
-  export default {
-    data: ()  => ({
-        dialog: false,
-        dialogDelete: false,      
-        headers: [
-            {
-                title: 'Nomor Unit',
-                align: 'start',
-                sortable: false,
-                key: 'nomor',
+    export default {
+        data() {
+            return {
+                items: [
+                { nomorUnit: '001', jenisKendaraan: 'Sepeda', status: 'Available' },
+                { nomorUnit: '002', jenisKendaraan: 'Skuter', status: 'Unavailable' }
+            ],
+            showAdd: false,
+            showEdit: false,
+            showDelete: false,
+            newItem: {
+                nomorUnit: '',
+                jenisKendaraan: 'Sepeda',
+                status: 'Available'
             },
-            { title: 'Jenis Kendaraan', key: 'jenis' },
-            { title: 'Status', key: 'status' },
-            { title: 'Aksi', key: 'actions' },
-        ],
-        vehicles: [],
-        editedIndex: -1,
-        editedItem: {
-            nomor: '',
-            jenis: '',
-            status: '',
-        },
-        defaultItem: {
-            nomor: '',
-            jenis: '',
-            status: '',
-        },
-    }),
-
-    computed: {
-        formTitle() {
-            return this.editedIndex === -1 ? 'Input Data Baru' : 'Edit Item'
-        },
-    },
-
-    watch: {
-        dialog(val) {
-        val || this.close()
-      },
-      
-      dialogDelete(val) {
-        val || this.closeDelete()
-      },
-    },
-
-    created() {
-      const storedData = localStorage.getItem('vehicles');
-
-      if (storedData) {
-        this.vehicles = JSON.parse(storedData);
-      } else {
-        this.initialize();
-      }
-    },
-
-    methods: {
-        initialize() {
-            this.vehicles = [
-                {
-                    nomor: 'A100',
-                    jenis: 'Sepeda',
-                    status: 'Available',
-                },
-                {
-                    nomor: 'B100',
-                    jenis: 'Skuter',
-                    status: 'Available',
-                },
-                {
-                    nomor: 'A102',
-                    jenis: 'Sepeda',
-                    status: 'In Use',
-                },
-            ]
-        },
-
-        save() {
-            if (this.editedIndex > -1) {
-            Object.assign(this.vehicles[this.editedIndex], this.editedItem)
-            } else {
-            this.vehicles.push(this.editedItem)
+            editItemIndex: -1,
+            editItemData: {
+                nomorUnit: '',
+                jenisKendaraan: 'Sepeda',
+                status: 'Available'
+            },
+            deleteItemIndex: -1
             }
-            this.saveToLocalStorage()
-            this.close()
         },
-
-        saveToLocalStorage(){
-            localStorage.setItem('vehicles', JSON.stringify(this.vehicles))
-        },
-
-        editItem(item) {
-            this.editedIndex = this.vehicles.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialog = true
-        },
-
-        deleteItem(item) {
-            this.editedIndex = this.vehicles.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialogDelete = true
-        },
-
-        deleteItemConfirm() {
-            this.vehicles.splice(this.editedIndex, 1)
-            this.closeDelete()
-        },
-
-        close() {
-            this.dialog = false
-            this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-            this.editedIndex = -1
-            })
-        },
-
-        closeDelete() {
-            this.dialogDelete = false
-            this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-            this.editedIndex = -1
-            })
-        },
+        methods: {
+            showAddModal() {
+                this.showAdd = true;
+            },
+            addItem() {
+                this.items.push({ ...this.newItem });
+                this.showAdd = false;
+            },
+            editItem(index) {
+                this.editItemIndex = index;
+                this.editItemData = { ...this.items[index] };
+                this.showEdit = true;
+            },
+            saveEdit() {
+                this.items[this.editItemIndex] = { ...this.editItemData };
+                this.showEdit = false;
+            },
+            confirmDelete(index) {
+                this.deleteItemIndex = index;
+                this.showDelete = true;
+            },
+            deleteItem() {
+                this.items.splice(this.deleteItemIndex, 1);
+                this.showDelete = false;
+            },
+            cancelDelete() {
+                this.showDelete = false;
+            }
+        }
     }
-}
 </script>
