@@ -1,92 +1,53 @@
 <template>
     <v-container>
-        <h1 class="mb-5" style="font-size: 40px; font-weight: bold;">Welcome, Admin!</h1>
-        <v-row class="mt-10" align="" justify="space-between">
+        <h1 class="mb-5 display-1 font-weight-bold;">Welcome, Admin!</h1>
+
+        <v-row class="mt-5 justify-space-between" align="center">
             <v-col v-for="(item, index) in data" :key="index" cols="auto">
-                <v-card class="mx-5 my-custom-background" width="300" height="150">
+                <v-card class="mx-auto elevation-10 rounded-lg" color="red-lighten-3" width="330" height="180">
                     <v-card-item>
-                        <div class="">
-                            <div class="text-overline mb-1 text-center">
-                                <span style="font-size: 18px; font-weight: bold;">{{ item.title }}</span>
-                            </div>
-                            <div class="w-100 align-center d-flex justify-space-between px-6">
-                                <div class="">
-                                    foto
-                                </div>
-                                <div class="">
-                                    <div class="bg-white pa-2">
-                                        <h2 class="text-center">123 <br> UNIT</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <v-card-title class="text-h5 font-weight-bold text-center mb-6">{{ item.title }}</v-card-title>
+                        <v-row class="mx-auto justify-space-between" align="center">
+                            <v-col>
+                                <v-img :src="require(`@/assets/${item.imageSource}`)" alt="Item Image" max-width="100"
+                                    max-height="100"></v-img>
+                            </v-col>
+                            <v-col>
+                                <v-card class="pa-1 bg-white rounded-lg">
+                                    <h2 class="text-center">123<br />UNIT</h2>
+                                </v-card>
+                            </v-col>
+                        </v-row>
                     </v-card-item>
                 </v-card>
             </v-col>
         </v-row>
 
-        <!-- Tambahkan dua kotak di bawah tiga kotak yang sudah ada -->
-        <v-row align="center" justify="space-between" class="mt-10">
-            <v-col cols="auto">
-                <v-card class="mx-5 my-custom-border d-flex justify-center" width="500" height="180">
-                    <img src="" alt="shelter" style="" class="bg-amber-accent-1 my-6 mr-3" width="280">
-                    <div class="d-flex justify-space-between align-center flex-column my-6 ml-3">
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center" style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center " style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                    </div>
-                </v-card>
-            </v-col>
-            <v-col cols="auto">
-                <v-card class="mx-5 my-custom-border d-flex justify-center" width="500" height="180">
-                    <img src="" alt="shelter" style="" class="bg-amber-accent-1 my-6 mr-3" width="280">
-                    <div class="d-flex justify-space-between align-center flex-column my-6 ml-3">
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center" style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center " style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                    </div>
-                </v-card>
-            </v-col>
-        </v-row>
-        <!-- Tambahkan dua kotak di bawah tiga kotak yang sudah ada -->
-        <v-row align="center" justify="space-between" class="mt-10">
-            <v-col cols="auto">
-                <v-card class="mx-5 my-custom-border d-flex justify-center" width="500" height="180">
-                    <img src="" alt="shelter" style="" class="bg-amber-accent-1 my-6 mr-3" width="280">
-                    <div class="d-flex justify-space-between align-center flex-column my-6 ml-3">
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center" style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center " style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                    </div>
-                </v-card>
-            </v-col>
-            <v-col cols="auto">
-                <v-card class="mx-5 my-custom-border d-flex justify-center" width="500" height="180">
-                    <img src="" alt="shelter" style="" class="bg-amber-accent-1 my-6 mr-3" width="280">
-                    <div class="d-flex justify-space-between align-center flex-column my-6 ml-3">
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center" style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
-                        <div class="px-8 py-4 bg-blue d-flex flex-column align-center " style="position: relative">
-                            <label class="text-brown" style="position: absolute; margin-top: -30px" for="">logo</label>
-                            <label class="" for="">200 Unit</label>
-                        </div>
+        <!-- Informasi Shelter -->
+        <v-row class="mt-8 justify-space-between" align="center">
+            <v-col v-for="(image, index) in images" :key="index" cols="auto">
+                <v-card class="my-custom-border">
+                    <div class="d-flex flex-column justify-center my-3">
+                        <v-card class="d-flex mx-auto justify-center" width="500" height="220" style="box-shadow: none">
+                            <img class="rounded-lg" :src="require(`@/assets/${image.url}`)" :alt="image.alt"
+                                :width="image.width" style="margin-top: 10px; margin-bottom: 10px">
+                            <div class="d-flex justify-space-between align-center flex-column my-5 ml-8">
+                                <div class="px-8 py-4 bg-red-lighten-4 d-flex flex-column align-center"
+                                    style="position: relative; margin-top: 10px; border-radius: 5px;">
+                                    <img :src="require(`@/assets/${image.logoUrl}`)" :alt="image.logoAlt"
+                                        style="position: absolute; top: -30px; width: 50px">
+                                    <label class="mt-2" for="">{{ image.unit }}</label>
+                                </div>
+                                <div class="px-8 py-4 bg-red-lighten-4 d-flex flex-column align-center"
+                                    style="position: relative; margin-top: 10px; border-radius: 5px;">
+                                    <img :src="require(`@/assets/${image.logoUrl2}`)" :alt="image.logoAlt"
+                                        style="position: absolute; top: -30px; width: 50px">
+                                    <label class="mt-2" for="">{{ image.unit }}</label>
+                                </div>
+                            </div>
+                        </v-card>
+                        <v-card class="font-weight-bold border-0 my-1 text-center text-h6" width="500"
+                            style="box-shadow: none" for="">{{ image.title }}</v-card>
                     </div>
                 </v-card>
             </v-col>
@@ -94,38 +55,68 @@
     </v-container>
 </template>
   
-  
-  
-  
 <script setup>
 const data = [
     {
         title: "Jumlah Peminjaman",
-        // value: "100", // Ganti dengan data yang sesuai
+        imageSource: "user-bicycle.png",
     },
     {
         title: "Kendaraan Tersedia",
-        // value: "50", // Ganti dengan data yang sesuai
+        imageSource: "available.png",
     },
     {
         title: "Kendaraan Diperbaiki",
-        // value: "10", // Ganti dengan data yang sesuai
-    }
+        imageSource: "maintenance.png",
+    },
+];
+
+const images = [
+    {
+        title: "Telkom University Landmark Tower",
+        url: "tult.jpg",
+        alt: "shelter_1",
+        width: 300,
+        logoUrl: "bicycle.png",
+        logoUrl2: "scooter.png",
+        logoAlt: "Logo 1",
+        unit: "200 Unit",
+    },
+    {
+        title: "Gedung Kuliah Umum / Gedung Tokong Nanas",
+        url: "gku.jpg",
+        alt: "shelter_2",
+        width: 300,
+        logoUrl: "bicycle.png",
+        logoUrl2: "scooter.png",
+        logoAlt: "Logo 2",
+        unit: "200 Unit",
+    },
+    {
+        title: "Open Library",
+        url: "oplib.jpg",
+        alt: "shelter 3",
+        width: 300,
+        logoUrl: "bicycle.png",
+        logoUrl2: "scooter.png",
+        logoAlt: "Logo 3",
+        unit: "200 Unit",
+    },
+    {
+        title: "Masjid Syamsul 'Ulum",
+        url: "msu.jpg",
+        alt: "shelter_4",
+        width: 300,
+        logoUrl: "bicycle.png",
+        logoUrl2: "scooter.png",
+        logoAlt: "Logo 4",
+        unit: "200 Unit",
+    },
 ];
 </script>
-  
+
 <style scoped>
-.my-custom-background {
-    background-color: #EF9A9A;
-}
-
 .my-custom-border {
-    border: 1px solid #B71C1C;
-}
-
-.text-h4 {
-    font-size: 20px;
-    font-weight: bold;
+    border: 1px solid #b71c1c;
 }
 </style>
-  
