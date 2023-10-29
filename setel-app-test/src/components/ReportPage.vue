@@ -105,7 +105,7 @@
     }),
     computed: {
       report () {
-        return [...Array(100).keys()].map(i => {
+        return [...Array(50).keys()].map(i => {
           const setel = { ...this.reports[i % 10] }
           setel.idPeminjaman = `${setel.idPeminjaman} ${i+1}`
 
