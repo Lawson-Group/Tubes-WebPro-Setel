@@ -40,8 +40,8 @@
                     <v-select v-model="newItem.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn @click="addItem" color="primary">Simpan</v-btn>
-                    <v-btn @click="showAdd = false" color="error">Batal</v-btn>
+                    <v-btn @click="addItem" color="#B11116" variant="tonal">Save</v-btn>
+                    <v-btn @click="showAdd = false" color="#B11116">Cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -57,8 +57,8 @@
                     <v-select v-model="editItemData.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn @click="saveEdit" color="primary">Simpan Perubahan</v-btn>
-                    <v-btn @click="showEdit = false" color="error">Batal</v-btn>
+                    <v-btn @click="saveEdit" color="#B11116" variant="tonal">Save Changes</v-btn>
+                    <v-btn @click="showEdit = false" color="error">Cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -66,14 +66,14 @@
         <v-dialog v-model="showDelete" class="d-flex align-center">
             <v-card width="500px" class="mx-auto">
                 <v-card-title>
-                    Konfirmasi Hapus Data
+                    Confirm Delete Data
                 </v-card-title>
                 <v-card-text>
                     Apakah Anda yakin ingin menghapus data ini?
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn @click="deleteItem" color="error">Ya</v-btn>
-                    <v-btn @click="cancelDelete" color="primary">Tidak</v-btn>
+                    <v-btn @click="deleteItem" color="#B11116">Yes</v-btn>
+                    <v-btn @click="cancelDelete" color="#B11116" variant="tonal">No</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
