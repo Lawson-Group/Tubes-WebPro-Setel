@@ -6,124 +6,112 @@
     >
       <v-data-table-virtual
         :headers="headers"
-        :items="virtualDesserts"
+        :items="report"
         fixed-header
-        class="elevation-1"
+        class="elevation-1;"
         style="height: 100%;"
-        item-value="name"
-      ></v-data-table-virtual>
+        item-value="name">
+      </v-data-table-virtual>
     </v-card>
   </template>
   
-  <script>
-    export default {
-      data: () => ({
-        headers: [
-          {
-            title: 'Dessert (100g serving)',
-            align: 'start',
-            sortable: false,
-            key: 'name',
-            style: {color: '#A32929;'}
-          },
-          { title: 'Calories', align: 'end', key: 'calories' },
-          { title: 'Fat (g)', align: 'end', key: 'fat' },
-          { title: 'Carbs (g)', align: 'end', key: 'carbs' },
-          { title: 'Protein (g)', align: 'end', key: 'protein' },
-          { title: 'Iron (%)', align: 'end', key: 'iron' },
-        ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1',
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1',
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7',
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8',
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6',
-          },
-        ],
-      }),
-      computed: {
-        virtualDesserts () {
-          return [...Array(10000).keys()].map(i => {
-            const dessert = { ...this.desserts[i % 10] }
-            dessert.name = `${dessert.name} #${i}`
-  
-            return dessert
-          })
+<script>
+  export default {
+    data: () => ({
+      headers: [
+        {
+          title: 'ID Peminjaman',
+          align: 'start',
+          sortable: false,
+          key: 'idPeminjaman',
         },
+        { title: 'Username', align: 'end', key: 'username'},
+        { title: 'Tanggal & Waktu', align: 'end', key: 'tanggalWaktu' },
+        { title: 'Nomor Unit', align: 'end', key: 'nomorUnit' },
+        { title: 'Jenis Kendaraan', align: 'end', key: 'jenisKendaraan' },
+      ],
+      reports: [
+        {
+          idPeminjaman: '',
+          username: 'aishueo',
+          tanggalWaktu: '2023-10-26 15:45:30',
+          nomorUnit: 'A001',
+          jenisKendaraan: 'Sepeda',
+        },
+        {
+          idPeminjaman: '',
+          username: 'jenarikha',
+          tanggalWaktu: '2023-11-26 15:45:30',
+          nomorUnit: 'A002',
+          jenisKendaraan: 'Sepeda',
+        },
+        {
+          idPeminjaman: '',
+          username: 'jannatinurrohmah',
+          tanggalWaktu: '2023-12-26 11:45:30',
+          nomorUnit: 'A003',
+          jenisKendaraan: 'Sepeda',
+        },
+        {
+          idPeminjaman: '',
+          username: 'novitasabila',
+          tanggalWaktu: '2023-13-26 10:45:30',
+          nomorUnit: 'A004',
+          jenisKendaraan: 'Sepeda',
+        },
+        {
+          idPeminjaman: '',
+          username: 'trianimumpuni',
+          tanggalWaktu: '2023-15-26 09:45:30',
+          nomorUnit: 'A005',
+          jenisKendaraan: 'Sepeda',
+        },
+        {
+          idPeminjaman: '',
+          username: 'arlecchino',
+          tanggalWaktu: '2023-20-26 15:45:30',
+          nomorUnit: 'B001',
+          jenisKendaraan: 'Sekuter',
+        },
+        {
+          idPeminjaman: '',
+          username: 'argenti',
+          tanggalWaktu: '2023-21-26 15:50:30',
+          nomorUnit: 'B002',
+          jenisKendaraan: 'Sekuter',
+        },
+        {
+          idPeminjaman: '',
+          username: 'archivistenoe',
+          tanggalWaktu: '2023-21-26 14:50:30',
+          nomorUnit: 'B003',
+          jenisKendaraan: 'Sekuter',
+        },
+        {
+          idPeminjaman: '',
+          username: 'uchinagaeri',
+          tanggalWaktu: '2023-22-26 18:50:30',
+          nomorUnit: 'B004',
+          jenisKendaraan: 'Sekuter',
+        },
+        {
+          idPeminjaman: '',
+          username: 'notningning',
+          tanggalWaktu: '2023-25-26 15:50:30',
+          nomorUnit: 'B005',
+          jenisKendaraan: 'Sekuter',
+        },
+      ],
+    }),
+    computed: {
+      report () {
+        return [...Array(100).keys()].map(i => {
+          const setel = { ...this.reports[i % 10] }
+          setel.idPeminjaman = `${setel.idPeminjaman} ${i+1}`
+
+          return setel
+        })
       },
-    }
-  </script>
+    },
+  }
+</script>

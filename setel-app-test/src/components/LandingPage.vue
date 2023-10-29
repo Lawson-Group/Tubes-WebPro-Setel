@@ -18,7 +18,7 @@
         <v-col cols="12" class="text-center">
           <h1>Selamat Datang di Setel, Admin</h1>
           <p>Nikmati kenyamanan dan kemudahan berkeliling 
-            kampus dengan menggunakan layanan penyewaan 
+            kampus dengan menggunakan layanan peminjaman 
             berkendara yang tersedia di Telkom University!</p>
         </v-col>
       </v-row>
@@ -61,9 +61,9 @@ export default {
         { image: require('@/assets/admin.png'), name: 'Triani' },
       ],
       images: [
-        { src: 'https://picsum.photos/1024/576', caption: 'Setel Apps' },
-        { src: 'https://picsum.photos/1024/576', caption: 'How To Use Setel' },
-        { src: 'https://picsum.photos/1024/576', caption: 'Why Setel?' }
+        { src: require('@/assets/LP_GKU.jpg'), caption: 'Setel Apps' },
+        { src: require('@/assets/OPLIB-MSU.jpg'), caption: 'How To Use Setel' },
+        { src: require('@/assets/LP_TULT.jpg'), caption: 'Why Setel?' }
       ]
     }
   }
