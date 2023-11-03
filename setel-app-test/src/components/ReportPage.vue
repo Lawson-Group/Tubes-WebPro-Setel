@@ -1,23 +1,141 @@
 <template>
-    <v-card
-      style="height: 100vh; width: 100%; color: #A32929;"
+  <v-card
+      class="px-5"
+      style="height: 100vh; width: 100%;  color: #A32929;"
       title="REPORTS"
       align="center"
+  >
+    <v-data-table-server
+      v-model:items-per-page="itemsPerPage"
+      :search="search"
+      :headers="headers"
+      :items-length="totalItems"
+      :items="serverItems"
+      :loading="loading"
+      class="elevation-1"
+      item-value="name"
+      @update:options="loadItems"
     >
-      <v-data-table-virtual
-        :headers="headers"
-        :items="report"
-        fixed-header
-        class="elevation-1;"
-        style="height: 100%;"
-        item-value="name">
-      </v-data-table-virtual>
-    </v-card>
-  </template>
+      <template v-slot:tfoot>
+        <tr>
+          <td>
+            <v-text-field v-model="username" hide-details placeholder="Search Username..." class="ma-2" density="compact"></v-text-field>
+          </td>
+        </tr>
+      </template>
+    </v-data-table-server>
+  </v-card>
+</template>
   
 <script>
+  const desserts = [
+    {
+      idPeminjaman: 1,
+      username: 'aishueo',
+      tanggalWaktu: '2023-10-26 15:45:30',
+      nomorUnit: 'A001',
+      jenisKendaraan: 'Sepeda',
+    },
+    {
+      idPeminjaman: 2,
+      username: 'jenarikha',
+      tanggalWaktu: '2023-11-26 15:45:30',
+      nomorUnit: 'A002',
+      jenisKendaraan: 'Sepeda',
+    },
+    {
+      idPeminjaman: 3,
+      username: 'jannatinurrohmah',
+      tanggalWaktu: '2023-12-26 11:45:30',
+      nomorUnit: 'A003',
+      jenisKendaraan: 'Sepeda',
+    },
+    {
+      idPeminjaman: 4,
+      username: 'novitasabila',
+      tanggalWaktu: '2023-13-26 10:45:30',
+      nomorUnit: 'A004',
+      jenisKendaraan: 'Sepeda',
+    },
+    {
+      idPeminjaman: 5,
+      username: 'trianimumpuni',
+      tanggalWaktu: '2023-15-26 09:45:30',
+      nomorUnit: 'A005',
+      jenisKendaraan: 'Sepeda',
+    },
+    {
+      idPeminjaman: 6,
+      username: 'arlecchino',
+      tanggalWaktu: '2023-20-26 15:45:30',
+      nomorUnit: 'B001',
+      jenisKendaraan: 'Sekuter',
+    },
+    {
+      idPeminjaman: 7,
+      username: 'argenti',
+      tanggalWaktu: '2023-21-26 15:50:30',
+      nomorUnit: 'B002',
+      jenisKendaraan: 'Sekuter',
+    },
+    {
+      idPeminjaman: 8,
+      username: 'archivistenoe',
+      tanggalWaktu: '2023-21-26 14:50:30',
+      nomorUnit: 'B003',
+      jenisKendaraan: 'Sekuter',
+    },
+    {
+      idPeminjaman: 9,
+      username: 'uchinagaeri',
+      tanggalWaktu: '2023-22-26 18:50:30',
+      nomorUnit: 'B004',
+      jenisKendaraan: 'Sekuter',
+    },
+    {
+      idPeminjaman: 10,
+      username: 'notningning',
+      tanggalWaktu: '2023-25-26 15:50:30',
+      nomorUnit: 'B005',
+      jenisKendaraan: 'Sekuter',
+    },
+  ]
+
+  const FakeAPI = {
+    async fetch ({ page, itemsPerPage, sortBy, search }) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const start = (page - 1) * itemsPerPage
+          const end = start + itemsPerPage
+          const items = desserts.slice().filter(item => {
+            if (search.username && !item.username.toLowerCase().includes(search.username.toLowerCase())) {
+              return false
+            }
+
+            return true
+          })
+
+          if (sortBy.length) {
+            const sortKey = sortBy[0].key
+            const sortOrder = sortBy[0].order
+            items.sort((a, b) => {
+              const aValue = a[sortKey]
+              const bValue = b[sortKey]
+              return sortOrder === 'desc' ? bValue - aValue : aValue - bValue
+            })
+          }
+
+          const paginated = items.slice(start, end)
+
+          resolve({ items: paginated, total: items.length })
+        }, 500)
+      })
+    },
+  }
+
   export default {
     data: () => ({
+      itemsPerPage: 5,
       headers: [
         {
           title: 'ID Peminjaman',
@@ -25,92 +143,30 @@
           sortable: false,
           key: 'idPeminjaman',
         },
-        { title: 'Username', align: 'end', key: 'username'},
-        { title: 'Tanggal & Waktu', align: 'end', key: 'tanggalWaktu' },
-        { title: 'Nomor Unit', align: 'end', key: 'nomorUnit' },
-        { title: 'Jenis Kendaraan', align: 'end', key: 'jenisKendaraan' },
+        { title: 'Username', key: 'username', align: 'end' },
+        { title: 'Tanggal & Waktu', key: 'tanggalWaktu', align: 'end' },
+        { title: 'Nomor Unit', key: 'nomorUnit', align: 'end' },
+        { title: 'Jenis Kendaraan', key: 'jenisKendaraan', align: 'end' },
       ],
-      reports: [
-        {
-          idPeminjaman: '',
-          username: 'aishueo',
-          tanggalWaktu: '2023-10-26 15:45:30',
-          nomorUnit: 'A001',
-          jenisKendaraan: 'Sepeda',
-        },
-        {
-          idPeminjaman: '',
-          username: 'jenarikha',
-          tanggalWaktu: '2023-11-26 15:45:30',
-          nomorUnit: 'A002',
-          jenisKendaraan: 'Sepeda',
-        },
-        {
-          idPeminjaman: '',
-          username: 'jannatinurrohmah',
-          tanggalWaktu: '2023-12-26 11:45:30',
-          nomorUnit: 'A003',
-          jenisKendaraan: 'Sepeda',
-        },
-        {
-          idPeminjaman: '',
-          username: 'novitasabila',
-          tanggalWaktu: '2023-13-26 10:45:30',
-          nomorUnit: 'A004',
-          jenisKendaraan: 'Sepeda',
-        },
-        {
-          idPeminjaman: '',
-          username: 'trianimumpuni',
-          tanggalWaktu: '2023-15-26 09:45:30',
-          nomorUnit: 'A005',
-          jenisKendaraan: 'Sepeda',
-        },
-        {
-          idPeminjaman: '',
-          username: 'arlecchino',
-          tanggalWaktu: '2023-20-26 15:45:30',
-          nomorUnit: 'B001',
-          jenisKendaraan: 'Sekuter',
-        },
-        {
-          idPeminjaman: '',
-          username: 'argenti',
-          tanggalWaktu: '2023-21-26 15:50:30',
-          nomorUnit: 'B002',
-          jenisKendaraan: 'Sekuter',
-        },
-        {
-          idPeminjaman: '',
-          username: 'archivistenoe',
-          tanggalWaktu: '2023-21-26 14:50:30',
-          nomorUnit: 'B003',
-          jenisKendaraan: 'Sekuter',
-        },
-        {
-          idPeminjaman: '',
-          username: 'uchinagaeri',
-          tanggalWaktu: '2023-22-26 18:50:30',
-          nomorUnit: 'B004',
-          jenisKendaraan: 'Sekuter',
-        },
-        {
-          idPeminjaman: '',
-          username: 'notningning',
-          tanggalWaktu: '2023-25-26 15:50:30',
-          nomorUnit: 'B005',
-          jenisKendaraan: 'Sekuter',
-        },
-      ],
+      serverItems: [],
+      loading: true,
+      totalItems: 0,
+      username: '',
+      search: '',
     }),
-    computed: {
-      report () {
-        return [...Array(50).keys()].map(i => {
-          const setel = { ...this.reports[i % 10] }
-          setel.idPeminjaman = `${setel.idPeminjaman} ${i+1}`
-
-          return setel
-        })
+    watch: {
+      username () {
+        this.search = String(Date.now())
+      },
+    },
+    methods: {
+      loadItems({ page, itemsPerPage, sortBy }) {
+        this.loading = true;
+        FakeAPI.fetch({ page, itemsPerPage, sortBy, search: {username: this.username} }).then(({ items, total }) => {
+          this.serverItems = items;
+          this.totalItems = total;
+          this.loading = false;
+        });
       },
     },
   }
