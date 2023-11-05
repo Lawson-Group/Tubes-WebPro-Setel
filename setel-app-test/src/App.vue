@@ -1,12 +1,16 @@
 <template>
   <v-app>
     <v-main>
-      <v-row no-gutters style="height: 100vh;">
+      <!-- <v-row no-gutters style="height: 100vh;"> -->
+      <v-row no-gutters>
         <v-col v-if="showNavbar" cols="3" md="2">
-          <NavBarVue ></NavBarVue>
+          <NavBarVue></NavBarVue>
         </v-col>
 
-        <v-col style="overflow-y: auto; height: 100vh;">
+        <v-col :style="{
+          'height': showNavbar ? '100vh' : 'auto',
+          'overflow-y': 'auto'
+        }">
           <router-view></router-view>
         </v-col>
       </v-row>

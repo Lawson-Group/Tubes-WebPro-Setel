@@ -2,16 +2,12 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <v-app-bar
-        color="transparent"
-        prominent
-        flat
-      >
-        <v-toolbar-title class="font-weight-bold text-left">Setel Admin</v-toolbar-title>
-        
+        <v-app-bar color="red-darken-4" prominent flat>
+          <v-toolbar-title class="font-weight-bold text-left">Setel Admin</v-toolbar-title>
 
-        <v-spacer></v-spacer>
-      </v-app-bar>
+
+          <v-spacer></v-spacer>
+        </v-app-bar>
       </v-col>
     </v-row>
     <v-row justify="center" align="center" class="fill-height">
@@ -25,42 +21,20 @@
         <v-card class="mx-auto px-6 py-8" max-width="500">
           <h1 class="text-center mb-16">Login</h1>
           <v-form v-model="form" @submit.prevent="onSubmit">
-            <v-text-field
-              v-model="username"
-              :readonly="loading"
-              :rules="[required]"
-              class="mb-8"
-              clearable
-              label="Username"
-            ></v-text-field>
+            <v-text-field v-model="username" :readonly="loading" :rules="[required]" class="mb-8" clearable
+              label="Username"></v-text-field>
 
-            <v-text-field
-              v-model="password"
-              :type="showPassword ? 'text' : 'password'"
+            <v-text-field v-model="password" :type="showPassword ? 'text' : 'password'"
               :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-              @click:append-inner="showPassword = !showPassword"
-              :readonly="loading"
-              :rules="[required]"
-              class="mb-8"
-              clearable
-              label="Password"
-              placeholder="Masukkan Password"
-            ></v-text-field>
+              @click:append-inner="showPassword = !showPassword" :readonly="loading" :rules="[required]" class="mb-8"
+              clearable label="Password" placeholder="Masukkan Password"></v-text-field>
             <v-alert v-if="loginError" type="error" dense>
               Username / Password yang dimasukkan salah
             </v-alert>
             <br />
 
-            <v-btn
-              :disabled="!form"
-              :loading="loading"
-              block
-              color="red-darken-4"
-              size="large"
-              type="submit"
-              @click="checkLogin"
-              variant="elevated"
-            >
+            <v-btn :disabled="!form" :loading="loading" block color="red-darken-4" size="large" type="submit"
+              @click="checkLogin" variant="elevated">
               Login
             </v-btn>
           </v-form>

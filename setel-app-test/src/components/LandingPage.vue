@@ -2,9 +2,8 @@
   <v-app>
     <v-carousel>
       <v-carousel-item v-for="(image, index) in images" :key="index" cover>
-        <div class="carousel-item-content">
+        <div class="carousel-item-content" justify="center">
           <img :src="image.src" :alt="'Image ' + (index + 1)" />
-          <div class="caption">{{ image.caption }}</div>
         </div>
       </v-carousel-item>
     </v-carousel>
@@ -18,12 +17,34 @@
             berkendara yang tersedia di Telkom University!</p>
         </v-col>
       </v-row>
-      <div class="d-flex justify-center mt-4">
-        <v-sheet v-for="(admin, index) in admins" :key="index" class="ma-2 pa-2">
-          <v-img :width="125" :src="admin.image"></v-img>
-          <h2 class="text-center">{{ admin.name }}</h2>
-        </v-sheet>
-      </div>
+
+      <v-row align="center" justify="center">
+        <v-col v-for="(admin, index) in admins" :key="index" cols="12" sm="6" md="4" lg="2">
+          <v-card class="ma-2 pa-2" variant="flat">
+            <v-img :src="admin.image" class="mx-auto" max-width="125" max-height="125"></v-img>
+            <h2 class="text-center">{{ admin.name }}</h2>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-spacer></v-spacer>
+      <v-row>
+        <v-col cols="12" class="text-center mt-4">
+          <h1>Statistik</h1>
+          <p>Gambaran umum jumlah kendaraan, jumlah kendaraan dalam masa perbaikan, jumlah pengguna yang terdaftar, dan
+            jumlah shelter yang tersedia</p>
+        </v-col>
+      </v-row>
+
+      <v-row align="center" justify="center">
+        <v-col v-for="(statistik, index) in data" :key="index" cols="12" sm="6" md="4" lg="2">
+          <v-card class="ma-2 pa-2" variant="flat">
+            <v-img :src="statistik.image" class="mx-auto" max-width="125" max-height="125"></v-img>
+            <h4 class="text-center mt-3">{{ statistik.subtitle }}</h4>
+            <h2 class="text-center">{{ statistik.title }}</h2>
+          </v-card>
+        </v-col>
+      </v-row>
 
       <div class="text-center mt-4">
         <router-link to="/LoginPage">
@@ -35,7 +56,6 @@
           </v-btn>
         </router-link>
       </div>
-
     </v-container>
   </v-app>
 </template>
@@ -52,10 +72,17 @@ export default {
         { image: require('@/assets/admin.png'), name: 'Novi' },
         { image: require('@/assets/admin.png'), name: 'Triani' },
       ],
+      data: [
+        { image: require('@/assets/StatistikSepeda.png'), title: 'Sepeda', subtitle: '100 unit' },
+        { image: require('@/assets/StatistikSkuter.png'), title: 'Skuter', subtitle: '100 unit' },
+        { image: require('@/assets/StatistikMaintenance.png'), title: 'Perbaikan', subtitle: '100 unit' },
+        { image: require('@/assets/StatistikPengguna.png'), title: 'Pengguna', subtitle: '9000' },
+        { image: require('@/assets/StatistikShelter.png'), title: 'Shelter', subtitle: '10' },
+      ],
       images: [
-        { src: require('@/assets/LP_GKU.jpg'), caption: 'Setel Apps' },
-        { src: require('@/assets/OPLIB-MSU.jpg'), caption: 'How To Use Setel' },
-        { src: require('@/assets/LP_TULT.jpg'), caption: 'Why Setel?' }
+        { src: require('@/assets/Carousel1.jpg') },
+        { src: require('@/assets/Carousel3.jpg') },
+        { src: require('@/assets/Carousel2.jpg') }
       ]
     }
   }
@@ -72,27 +99,17 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .carousel-item-content img {
   width: 100%;
   transition: transform 0.3s;
+  height: 100%;
 }
 
-/* Efek untuk zoom img saat hover*/
 .carousel-item-content:hover img {
   transform: scale(1.05);
-}
-
-/* Caption atau teks overlay */
-.carousel-item-content .caption {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 5px 10px;
-  border-radius: 5px;
 }
 </style>
