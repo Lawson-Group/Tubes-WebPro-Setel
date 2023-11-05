@@ -1,7 +1,8 @@
 <template>
     <v-container>
-        <v-container-title style="font-weight: bold; align: center;">Inventory Kendaraan</v-container-title>
-        <v-btn color="#B11116" fab dark right @click="showAddModal" style="position: fixed; top: 10px; right: 10px;">
+        <h1 class="mb-5 display-1 font-weight-bold;">Inventory</h1>
+
+        <v-btn color="#B11116" fab dark right @click="showAddModal" style="position: fixed; top: 20px; right: 20px;">
             + Add Data
         </v-btn>
         
@@ -40,8 +41,8 @@
                     <v-select v-model="newItem.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn @click="addItem" color="#B11116" variant="tonal">Save</v-btn>
-                    <v-btn @click="showAdd = false" color="#B11116">Cancel</v-btn>
+                    <v-btn @click="showAdd = false" color="gray">Cancel</v-btn>
+                    <v-btn @click="addItem" color="#B11116">Save</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -57,8 +58,8 @@
                     <v-select v-model="editItemData.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn @click="saveEdit" color="#B11116" variant="tonal">Save Changes</v-btn>
-                    <v-btn @click="showEdit = false" color="error">Cancel</v-btn>
+                    <v-btn @click="showEdit = false" color="gray">Cancel</v-btn>
+                    <v-btn @click="saveEdit" color="#B11116">Save Changes</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -72,8 +73,8 @@
                     Apakah Anda yakin ingin menghapus data ini?
                 </v-card-text>
                 <v-card-actions>
+                    <v-btn @click="cancelDelete" color="gray">No</v-btn>
                     <v-btn @click="deleteItem" color="#B11116">Yes</v-btn>
-                    <v-btn @click="cancelDelete" color="#B11116" variant="tonal">No</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
