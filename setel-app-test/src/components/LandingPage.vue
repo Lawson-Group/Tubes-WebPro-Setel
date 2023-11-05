@@ -1,24 +1,20 @@
 <template>
   <v-app>
     <v-carousel>
-    <v-carousel-item 
-      v-for="(image, index) in images" 
-      :key="index" 
-      cover
-    >
-      <div class="carousel-item-content">
-        <img :src="image.src" :alt="'Image ' + (index + 1)"/>
-        <div class="caption">{{ image.caption }}</div>
-      </div>
-    </v-carousel-item>
-  </v-carousel>
+      <v-carousel-item v-for="(image, index) in images" :key="index" cover>
+        <div class="carousel-item-content">
+          <img :src="image.src" :alt="'Image ' + (index + 1)" />
+          <div class="caption">{{ image.caption }}</div>
+        </div>
+      </v-carousel-item>
+    </v-carousel>
 
     <v-container>
       <v-row>
         <v-col cols="12" class="text-center">
           <h1>Selamat Datang di Setel, Admin</h1>
-          <p>Nikmati kenyamanan dan kemudahan berkeliling 
-            kampus dengan menggunakan layanan peminjaman 
+          <p>Nikmati kenyamanan dan kemudahan berkeliling
+            kampus dengan menggunakan layanan peminjaman
             berkendara yang tersedia di Telkom University!</p>
         </v-col>
       </v-row>
@@ -31,11 +27,7 @@
 
       <div class="text-center mt-4">
         <router-link to="/LoginPage">
-          <v-btn 
-            append-icon="mdi-login" 
-            class="text-none"
-            color="red-darken-4"
-            variant="elevated">
+          <v-btn append-icon="mdi-login" class="text-none" color="red-darken-4" variant="elevated">
             Login
             <template v-slot:append>
               <v-icon></v-icon>
@@ -98,7 +90,7 @@ export default {
   position: absolute;
   bottom: 10px;
   left: 10px;
-  color:white;
+  color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 5px 10px;
   border-radius: 5px;
