@@ -1,10 +1,9 @@
 <template>
   <v-card
-      class="px-5"
-      style="height: 100vh; width: 100%;  color: #A32929;"
-      title="REPORTS"
-      align="center"
+      class="px-13 mt-4"
+      style="height: 100vh; width: 100%;  color: #000000; "
   >
+  <h1 class="mb-5 display-1 font-weight-bold;">Report</h1>
     <v-data-table-server
       v-model:items-per-page="itemsPerPage"
       :search="search"
