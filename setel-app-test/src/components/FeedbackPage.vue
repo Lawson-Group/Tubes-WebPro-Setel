@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="24" sm="14" md="10" lg="8">
-        <h1 class="feedback-title">Feedback</h1>
+        <h1 class="mb-5 display-1 font-weight-bold;">Feedback</h1>
         <div class="feedback-list">
           <div class="feedback-item" v-for="feedback in feedbacks" :key="feedback.id">
             <div class="feedback-profile">
@@ -104,15 +104,6 @@ export default {
 </script>
 
 <style scoped>
-.feedback-title {
-  font-size: 30px;
-  text-align: center;
-  margin-top: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  font-family: 'Inter', sans-serif;
-  font-weight: bold;
-}
 .feedback-list {
   margin-top: 20px;
   display: flex;
@@ -150,14 +141,12 @@ export default {
 .profile-nim-name {
   margin-bottom: 10px;
   font-size: 18px;
-  font-family: 'Inter', sans-serif;
   font-weight: bold;
 }
 
 time-ago {
   margin-bottom: 10px;
   font-size: 15px;
-  font-family: 'Inter', sans-serif;
   font-weight: bold;
 }
 
@@ -174,8 +163,6 @@ time-ago {
 
 .feedback-text {
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
   text-align: left;
 }
 </style>
-
