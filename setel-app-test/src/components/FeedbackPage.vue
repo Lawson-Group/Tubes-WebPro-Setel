@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row justify="center">
+    <v-row justify="left" class="px-9">
       <v-col cols="24" sm="14" md="10" lg="8">
         <h1 class="mb-5 display-1 font-weight-bold;">Feedback</h1>
         <div class="feedback-list">

@@ -3,9 +3,8 @@
     <v-row>
       <v-col cols="12">
         <v-app-bar color="red-darken-4" prominent flat>
-          <v-toolbar-title class="font-weight-bold text-left">Setel Admin</v-toolbar-title>
-
-
+          <v-toolbar-title class="font-weight-bold text-left px-8">Setel Admin</v-toolbar-title>
+          
           <v-spacer></v-spacer>
         </v-app-bar>
       </v-col>
@@ -68,7 +67,7 @@ export default {
     onSubmit() {
       if (!this.form) return;
       this.loading = true;
-      setTimeout(() => (this.loading = false), 2000);
+      setTimeout(() => (this.loading = false), 1000);
     },
     required(v) {
       return !!v || "*Field is required";
