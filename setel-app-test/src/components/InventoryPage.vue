@@ -6,17 +6,25 @@
             + Add Data
         </v-btn>
         
-        <v-table fixed-header style="padding-top: 15px;">
-            <thead>
+        <v-text-field
+            v-model="search"
+            label="Search"
+            @input="searchItems"
+            solo-inverted
+            class="mx-4"
+        >
+        </v-text-field>
+
+        <v-data-table
+            :headers="headers"
+            :items="items"
+            :search="search"
+            :loading="loading"
+            :pagination.sync="pagination"
+            :items-per-page.sync="itemsPerPage"
+        >
+            <template v-slot:item="{ item, index }">
                 <tr class="text-center">
-                    <th>Nomor Unit</th>
-                    <th>Jenis Kendaraan</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in items" :key="index">
                     <td>{{ item.nomorUnit }}</td>
                     <td>{{ item.jenisKendaraan }}</td>
                     <td>{{ item.status }}</td>
@@ -29,8 +37,8 @@
                         </button>
                     </td>
                 </tr>
-            </tbody>
-        </v-table>
+            </template>
+        </v-data-table>
 
         <v-dialog v-model="showAdd" max-width="500">
             <v-card>
@@ -86,9 +94,22 @@
         data() {
             return {
                 items: [
-                { nomorUnit: '001', jenisKendaraan: 'Sepeda', status: 'Available' },
-                { nomorUnit: '002', jenisKendaraan: 'Skuter', status: 'Unavailable' }
+                { nomorUnit: 'A001', jenisKendaraan: 'Sepeda', status: 'Available' },
+                { nomorUnit: 'B002', jenisKendaraan: 'Skuter', status: 'Unavailable' }
             ],
+            headers: [
+                { title: 'Nomor Unit', key: 'nomorUnit', align: 'center' },
+                { title: 'Jenis Kendaraan', key: 'jenisKendaraan', align: 'center'},
+                { title: 'Status', key: 'status', align: 'center' },
+                { title: 'Aksi', key: 'actions', align: 'center', sortable: false },
+            ],
+            search: '',
+            loading: false,
+            pagination: {
+                page: 1,
+                rowsPerPage: 5,
+            },
+            itemsPerPage: 5,
             showAdd: false,
             showEdit: false,
             showDelete: false,
