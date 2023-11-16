@@ -1,168 +1,175 @@
 <template>
-  <v-container fluid>
-    <v-row justify="left" class="px-9">
-      <v-col cols="24" sm="14" md="10" lg="8">
-        <h1 class="mb-5 display-1 font-weight-bold;">Feedback</h1>
-        <div class="feedback-list">
-          <div class="feedback-item" v-for="feedback in feedbacks" :key="feedback.id">
-            <div class="feedback-profile">
-              <v-avatar class="profile-icon mx-4" size="50" color="#A32929">
-                <v-icon size="x-large">
-                  mdi-account-circle-outline
-                </v-icon>
-              </v-avatar>
-              <div class="profile-info" style="padding-right: 10%;">
-                <div class="profile-nim-name" style="font-size: 18px; color: #A32929; margin-bottom: 5px;">
-                  {{ feedback.nim }} - {{ feedback.username }}
-                </div>
-                <div class="time-ago" style="font-size: 15px; color: #AE5C5C; margin-bottom: 5px;">
-                  {{ getTimeAgo(feedback.timestamp) }}
-                </div>
-                <div class="separator">
-                  <div class="separator-line"></div>
-                </div>
-                <div class="feedback-text" style="font-size: 16px;">
-                  {{ feedback.text }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </v-col>
+  <v-card class="px-13 mt-4" style="height: 100vh; width: 100%; color: #000000;">
+    <h1 class="mb-5 display-1 font-weight-bold">Feedback</h1>
+    <v-row class="d-flex justify-end ma-2">
+      <v-text-field v-model="username" hide-details placeholder="Search Username..." class="ma-2" density="compact"></v-text-field>
     </v-row>
-  </v-container>
+
+    <v-data-table-server
+      v-model:items-per-page="itemsPerPage"
+      :search="search"
+      :headers="headers"
+      :items-length="totalItems"
+      :items="dessertsWithProfile"
+      :loading="loading"
+      class="elevation-1"
+      item-value="name"
+      @update:options="loadItems"
+    ></v-data-table-server>
+  </v-card>
 </template>
 
 <script>
+const desserts = [
+  {
+    id: 1,
+    nim: '1302210004',
+    username: 'Jean Rika Haryadi',
+    timestamp: new Date('2023-11-28T11:01:03'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
+  },
+  {
+    id: 2,
+    nim: '1302213030',
+    username: 'Novita Sabila Nugraha',
+    timestamp: new Date('2023-11-25T07:11:02'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+  {
+    id: 3,
+    nim: '1302213038',
+    username: 'Aisha Putri Nuryan',
+    timestamp: new Date('2023-11-19T05:09:11'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
+  },
+  {
+    id: 4,
+    nim: '1302213051',
+    username: 'Jannatin Nurrohman',
+    timestamp: new Date('2023-11-15T17:19:23'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
+  },
+  {
+    id: 5,
+    nim: '1302213091',
+    username: 'Triani Putri Mumpuni',
+    timestamp: new Date('2023-11-10T20:02:49'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula',
+  },
+  {
+    id: 6,
+    nim: '1302213007',
+    username: 'Aerichanie',
+    timestamp: new Date('2023-10-31T15:03:19'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
+  },
+  {
+    id: 7,
+    nim: '1204190002',
+    username: 'Karinater Yoo',
+    timestamp: new Date('2023-10-29T14:00:00'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
+  },
+  {
+    id: 8,
+    nim: '1653173301',
+    username: 'Ningningguang',
+    timestamp: new Date('2023-10-28T17:04:11'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+  {
+    id: 9,
+    nim: '1282303218',
+    username: 'Huangren',
+    timestamp: new Date('2023-10-27T12:57:34'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
+  },
+  {
+    id: 10,
+    nim: '1281999216',
+    username: 'Mark Lee',
+    timestamp: new Date('2023-10-25T10:00:00'),
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  },
+];
+
+const FakeAPI = {
+  async fetch({ page, itemsPerPage, sortBy, search }) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const items = desserts
+          .slice()
+          .filter((item) => {
+            if (search.username && !item.username.toLowerCase().includes(search.username.toLowerCase())) {
+              return false;
+            }
+            return true;
+          });
+
+        if (sortBy.length) {
+          const sortKey = sortBy[0].key;
+          const sortOrder = sortBy[0].order;
+          items.sort((a, b) => {
+            const aValue = a[sortKey];
+            const bValue = b[sortKey];
+            return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
+          });
+        }
+
+        const paginated = items.slice(start, end);
+
+        resolve({ items: paginated, total: items.length });
+      }, 500);
+    });
+  },
+};
+
 export default {
-  data() {
-    return {
-      feedbacks: [
-        {
-          id: 1,
-          nim: '1302213000',
-          username: 'Aerichanie',
-          timestamp: new Date('2023-10-31T15:03:19'),
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-        },
-
-        {
-          id: 2,
-          nim: '1204190002',
-          username: 'Karinater Yoo',
-          timestamp: new Date('2023-10-29T14:00:00'),
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
-        },
-
-        {
-          id: 3,
-          nim: '16531733018',
-          username: 'Ningningguang',
-          timestamp: new Date('2023-10-28T17:04:11'),
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-
-        {
-          id: 4,
-          nim: '1282303218',
-          username: 'Huangre',
-          timestamp: new Date('2023-10-27T12:57:34'),
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
-        },
-
-        {
-          id: 5,
-          nim: '1281999216',
-          username: 'Mark',
-          timestamp: new Date('2023-10-25T10:00:00'),
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-      ],
-    };
+  data: () => ({
+    itemsPerPage: 5,
+    headers: [
+      { title: 'ID', align: 'center', sortable: false, key: 'id' },
+      { title: 'Username', key: 'profile', align: 'center' },
+      { title: 'NIM', key: 'nim', align: 'center' },
+      { title: 'Timestamp', key: 'timestamp', align: 'start' },
+      { title: 'Feedback', key: 'text', align: 'start' },
+    ],
+    serverItems: [],
+    loading: true,
+    totalItems: 0,
+    username: '',
+    search: '',
+  }),
+  watch: {
+    username() {
+      this.loadItems({ page: 1, itemsPerPage: this.itemsPerPage, sortBy: [] });
+    },
   },
   methods: {
-    getTimeAgo(timestamp) {
-      const now = new Date();
-      const diff = now - new Date(timestamp);
-      const seconds = Math.floor(diff / 1000);
-      if (seconds < 60) {
-        return `${seconds} detik yang lalu`;
-      }
-      const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) {
-        return `${minutes} menit yang lalu`;
-      }
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) {
-        return `${hours} jam yang lalu`;
-      }
-      const days = Math.floor(hours / 24);
-      return `${days} hari yang lalu`;
+    loadItems({ page, itemsPerPage, sortBy }) {
+      this.loading = true;
+      FakeAPI.fetch({ page, itemsPerPage, sortBy, search: { username: this.username } }).then(({ items, total }) => {
+        this.serverItems = items;
+        this.totalItems = total;
+        this.loading = false;
+      });
+    },
+  },
+  computed: {
+    dessertsWithProfile() {
+      return this.serverItems.map((item) => ({
+        ...item,
+        profile: `${item.username}`,
+      }));
     },
   },
 };
 </script>
 
 <style scoped>
-.feedback-list {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.feedback-item {
-  border: 1px solid #000;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-.feedback-profile {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.profile-icon {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.profile-info {
-  flex-direction: column;
-}
-
-.profile-nim-name {
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-time-ago {
-  margin-bottom: 10px;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.separator {
-  text-align: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.separator-line {
-  border-bottom: 1px solid #000;
-  width: 100%;
-}
-
-.feedback-text {
-  font-size: 16px;
-  text-align: left;
+.v-data-table {
+  overflow-x: auto;
 }
 </style>
