@@ -1,27 +1,29 @@
 <template>
     <v-container>
         <h1 class="mb-5 display-1 font-weight-bold;">Inventory</h1>
-
-        <v-btn color="#B11116" fab dark right @click="showAddModal" style="position: fixed; top: 20px; right: 20px;">
-            + Add Data
-        </v-btn>
         
-        <v-text-field
-            v-model="search"
-            label="Search"
-            @input="searchItems"
-            solo-inverted
-            class="mx-4"
-        >
-        </v-text-field>
+        <div class="d-flex justify-end align center mb-4">
+            <v-text-field
+                v-model="search"
+                label="Search"
+                @input="searchItems"
+                solo-inverted
+                class="mx-4"
+            >
+            </v-text-field>
+
+            <v-btn color="#B11116" fab dark right @click="showAddModal" style="position: fixed; top: 20px; right: 20px;">
+                + Add Data
+            </v-btn>
+        </div>
 
         <v-data-table
             :headers="headers"
             :items="items"
             :search="search"
             :loading="loading"
-            :pagination.sync="pagination"
-            :items-per-page.sync="itemsPerPage"
+            :pagination="pagination"
+            :items-per-page="itemsPerPage"
         >
             <template v-slot:item="{ item, index }">
                 <tr class="text-center">
