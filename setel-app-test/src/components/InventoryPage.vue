@@ -2,7 +2,7 @@
     <v-container>
         <h1 class="mb-5 display-1 font-weight-bold;">Inventory</h1>
         
-        <div class="d-flex justify-end align center mb-4">
+        <v-row align="center" justify="center">
             <v-text-field
                 v-model="search"
                 label="Search"
@@ -12,10 +12,16 @@
             >
             </v-text-field>
 
-            <v-btn color="#B11116" fab dark right @click="showAddModal" style="position: fixed; top: 20px; right: 20px;">
-                + Add Data
+            <v-btn
+                color="#B11116"
+                @click="showAddModal"
+                class="ml-2"
+                size="large"
+                elevation="0"
+            >
+                <h1>+</h1> 
             </v-btn>
-        </div>
+        </v-row>
 
         <v-data-table
             :headers="headers"
