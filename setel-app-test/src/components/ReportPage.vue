@@ -4,6 +4,18 @@
       style="height: 100vh; width: 100%;  color: #000000; "
   >
   <h1 class="mb-5 display-1 font-weight-bold;">Report</h1>
+    
+    <v-row style="width: 250px;">
+      <v-text-field
+        v-model="username"
+        hide-details
+        placeholder="Search Username..."
+        class="ml-2"
+        dense
+        append-icon="mdi-magnify"
+      ></v-text-field>
+    </v-row>
+
     <v-data-table-server
       v-model:items-per-page="itemsPerPage"
       :search="search"
@@ -18,7 +30,7 @@
       <template v-slot:tfoot>
         <tr>
           <td>
-            <v-text-field v-model="username" hide-details placeholder="Search Username..." class="ma-2" density="compact"></v-text-field>
+            
           </td>
         </tr>
       </template>
