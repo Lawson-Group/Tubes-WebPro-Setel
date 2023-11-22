@@ -1,169 +1,156 @@
 <template>
-  <v-card class="px-13 mt-4" style="height: 100vh; width: 100%; color: #000000;">
+  <v-container>
     <h1 class="mb-5 display-1 font-weight-bold">Feedback</h1>
-    <v-row class="d-flex justify-end ma-2">
-      <v-text-field v-model="username" hide-details placeholder="Search Username..." class="ma-2" density="compact"></v-text-field>
+
+    <v-row align="center" justify="flex-end">
+      <v-text-field 
+        v-model="search"
+        label="Search..." 
+        solo-inverted 
+        @input="loadItems"
+        prepend-icon="mdi-magnify"
+        class="mx-4"
+      ></v-text-field>
     </v-row>
 
-    <v-data-table-server
-      v-model:items-per-page="itemsPerPage"
-      :search="search"
+    <v-data-table
       :headers="headers"
-      :items-length="totalItems"
-      :items="dessertsWithProfile"
+      :items="itemsWithFormattedTimestamp"
+      :search="search"
       :loading="loading"
-      class="elevation-1"
-      item-value="name"
-      @update:options="loadItems"
-    ></v-data-table-server>
-  </v-card>
+      :pagination="pagination"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+    >
+      <template v-slot:item="{ item }">
+        <tr class="text-start">
+          <td>{{ item.id }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.nim }}</td>
+          <td>{{ item.timestampFormatted }}</td>
+          <td>{{ item.text }}</td>
+        </tr>
+      </template>
+    </v-data-table>
+  </v-container>
 </template>
 
 <script>
-const desserts = [
-  {
-    id: 1,
-    nim: '1302210004',
-    username: 'Jean Rika Haryadi',
-    timestamp: new Date('2023-11-28T11:01:03'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
-  },
-  {
-    id: 2,
-    nim: '1302213030',
-    username: 'Novita Sabila Nugraha',
-    timestamp: new Date('2023-11-25T07:11:02'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: 3,
-    nim: '1302213038',
-    username: 'Aisha Putri Nuryan',
-    timestamp: new Date('2023-11-19T05:09:11'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
-  },
-  {
-    id: 4,
-    nim: '1302213051',
-    username: 'Jannatin Nurrohman',
-    timestamp: new Date('2023-11-15T17:19:23'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
-  },
-  {
-    id: 5,
-    nim: '1302213091',
-    username: 'Triani Putri Mumpuni',
-    timestamp: new Date('2023-11-10T20:02:49'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula',
-  },
-  {
-    id: 6,
-    nim: '1302213007',
-    username: 'Aerichanie',
-    timestamp: new Date('2023-10-31T15:03:19'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-  },
-  {
-    id: 7,
-    nim: '1204190002',
-    username: 'Karinater Yoo',
-    timestamp: new Date('2023-10-29T14:00:00'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
-  },
-  {
-    id: 8,
-    nim: '1653173301',
-    username: 'Ningningguang',
-    timestamp: new Date('2023-10-28T17:04:11'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: 9,
-    nim: '1282303218',
-    username: 'Huangren',
-    timestamp: new Date('2023-10-27T12:57:34'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
-  },
-  {
-    id: 10,
-    nim: '1281999216',
-    username: 'Mark Lee',
-    timestamp: new Date('2023-10-25T10:00:00'),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-];
-
-const FakeAPI = {
-  async fetch({ page, itemsPerPage, sortBy, search }) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const items = desserts
-          .slice()
-          .filter((item) => {
-            if (search.username && !item.username.toLowerCase().includes(search.username.toLowerCase())) {
-              return false;
-            }
-            return true;
-          });
-
-        if (sortBy.length) {
-          const sortKey = sortBy[0].key;
-          const sortOrder = sortBy[0].order;
-          items.sort((a, b) => {
-            const aValue = a[sortKey];
-            const bValue = b[sortKey];
-            return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
-          });
-        }
-
-        const paginated = items.slice(start, end);
-
-        resolve({ items: paginated, total: items.length });
-      }, 500);
-    });
-  },
-};
-
-export default {
-  data: () => ({
-    itemsPerPage: 5,
-    headers: [
-      { title: 'ID', align: 'center', sortable: false, key: 'id' },
-      { title: 'Username', key: 'profile', align: 'center' },
-      { title: 'NIM', key: 'nim', align: 'center' },
-      { title: 'Timestamp', key: 'timestamp', align: 'start' },
-      { title: 'Feedback', key: 'text', align: 'start' },
+  export default {
+    data() {
+      return {
+          items: [
+          {
+            id: 1,
+            nim: '1302210004',
+            username: 'jeanrikha',
+            timestamp: new Date('2023-11-28 11:01:03'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
+          },
+          {
+            id: 2,
+            nim: '1302213030',
+            username: 'novitasabila',
+            timestamp: new Date('2023-11-25 07:11:02'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          },
+          {
+            id: 3,
+            nim: '1302213038',
+            username: 'aishueo',
+            timestamp: new Date('2023-11-19 05:09:11'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
+          },
+          {
+            id: 4,
+            nim: '1302213051',
+            username: 'jannatinurrohmah',
+            timestamp: new Date('2023-11-15 17:19:23'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
+          },
+          {
+            id: 5,
+            nim: '1302213091',
+            username: 'trianipmumpuni',
+            timestamp: new Date('2023-11-10 20:02:49'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula',
+          },
+          {
+            id: 6,
+            nim: '1302213007',
+            username: 'aerichanie',
+            timestamp: new Date('2023-10-31 15:03:19'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
+          },
+          {
+            id: 7,
+            nim: '1204190002',
+            username: 'karinateryoo',
+            timestamp: new Date('2023-10-29 14:00:00'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.',
+          },
+          {
+            id: 8,
+            nim: '1653173301',
+            username: 'ningningguang',
+            timestamp: new Date('2023-10-28 17:04:11'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          },
+          {
+            id: 9,
+            nim: '1282303218',
+            username: 'huangren',
+            timestamp: new Date('2023-10-27 12:57:34'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum.',
+          },
+          {
+            id: 10,
+            nim: '1281999216',
+            username: 'marklee',
+            timestamp: new Date('2023-10-25 10:00:00'),
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis interdum elementum. Proin mi quam, maximus vitae laoreet quis, aliquet eget ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          },
     ],
-    serverItems: [],
-    loading: true,
-    totalItems: 0,
-    username: '',
+    headers: [
+      { title: 'ID', key: 'id', align: 'center' },
+      { title: 'Username', key: 'username', align: 'center' },
+      { title: 'NIM', key: 'nim', align: 'center' },
+      { title: 'Tanggal & Waktu', key: 'timestamp', align: 'start' },
+      { title: 'Feedback', key: 'text', align: 'center' },
+    ],
     search: '',
-  }),
-  watch: {
-    username() {
-      this.loadItems({ page: 1, itemsPerPage: this.itemsPerPage, sortBy: [] });
+      loading: false,
+      pagination: {
+          page: 1,
+          rowsPerPage: 5,
+      },
+      itemsPerPage: 5,
+    };
+  },
+ computed: {
+    itemsWithFormattedTimestamp() {
+      return this.items.map((item) => ({
+        ...item,
+        timestampFormatted: this.formatTimestamp(item.timestamp),
+      }));
     },
   },
   methods: {
-    loadItems({ page, itemsPerPage, sortBy }) {
-      this.loading = true;
-      FakeAPI.fetch({ page, itemsPerPage, sortBy, search: { username: this.username } }).then(({ items, total }) => {
-        this.serverItems = items;
-        this.totalItems = total;
-        this.loading = false;
-      });
+    formatTimestamp(timestamp) {
+      return new Date(timestamp).toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
     },
   },
-  computed: {
-    dessertsWithProfile() {
-      return this.serverItems.map((item) => ({
-        ...item,
-        profile: `${item.username}`,
-      }));
-    },
+  loadItems() {
+    const filteredItems = this.items.filter(item => {
+      const lowerSearch = this.search.toLowerCase();
+      const usernameMatch = item.username.toLowerCase().includes(lowerSearch);
+      const nimMatch = item.nim.toLowerCase().includes(lowerSearch);
+
+      return usernameMatch || nimMatch;
+    });
+
+    this.totalItems = filteredItems.length;
+    this.loading = false;
   },
 };
 </script>
