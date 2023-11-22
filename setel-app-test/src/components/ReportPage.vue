@@ -1,41 +1,40 @@
 <template>
-  <v-card
-      class="px-13 mt-4"
-      style="height: 100vh; width: 100%;  color: #000000; "
-  >
-  <h1 class="mb-5 display-1 font-weight-bold;">Report</h1>
-    
-    <v-row style="width: 250px;">
-      <v-text-field
-        v-model="username"
-        hide-details
-        placeholder="Search Username..."
-        class="ml-2"
-        dense
-        append-icon="mdi-magnify"
-      ></v-text-field>
-    </v-row>
+  <v-container>
+        <h1 class="mb-5 display-1 font-weight-bold;">Report</h1>
+        
+        <v-row align="center" justify="center">
+            <v-text-field
+                v-model="search"
+                label="Search Username..."
+                @input="searchItems"
+                solo-inverted
+                class="mx-4"
+                prepend-icon="mdi-magnify"
+            >
+            </v-text-field>
+        </v-row>
+        <v-data-table-server
+          v-model:items-per-page="itemsPerPage"
+          :search="search"
+          :headers="headers"
+          :items-length="totalItems"
+          :items="serverItems"
+          :loading="loading"
+          class="elevation-0"
+          item-value="name"
+          @update:options="loadItems"
+        >
+          <template v-slot:tfoot>
+            <tr>
+              <td>
+                
+              </td>
+            </tr>
+          </template>
+        </v-data-table-server>
+  </v-container>
 
-    <v-data-table-server
-      v-model:items-per-page="itemsPerPage"
-      :search="search"
-      :headers="headers"
-      :items-length="totalItems"
-      :items="serverItems"
-      :loading="loading"
-      class="elevation-1"
-      item-value="name"
-      @update:options="loadItems"
-    >
-      <template v-slot:tfoot>
-        <tr>
-          <td>
-            
-          </td>
-        </tr>
-      </template>
-    </v-data-table-server>
-  </v-card>
+    
 </template>
   
 <script>
