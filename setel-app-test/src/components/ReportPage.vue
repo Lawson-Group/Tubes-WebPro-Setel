@@ -5,7 +5,7 @@
         <v-row align="center" justify="center">
             <v-text-field
                 v-model="search"
-                label="Search Username..."
+                label="Search..."
                 @input="searchItems"
                 solo-inverted
                 class="mx-4"
