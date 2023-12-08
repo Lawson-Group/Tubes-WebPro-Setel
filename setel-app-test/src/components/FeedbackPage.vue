@@ -113,8 +113,8 @@
     ],
     headers: [
       { title: 'ID', key: 'id', align: 'center' },
-      { title: 'NIM', key: 'nim', align: 'center' },
       { title: 'Username', key: 'username', align: 'center' },
+      { title: 'NIM', key: 'nim', align: 'center' },
       { title: 'Tanggal & Waktu', key: 'timestamp', align: 'start' },
       { title: 'Feedback', key: 'text', align: 'center' },
     ],
