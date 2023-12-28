@@ -84,7 +84,7 @@
     </v-container>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref } from 'vue';
 
 const dialog = ref(false);
@@ -156,16 +156,42 @@ const dataShelter = [
         unit: "Tersedia 50 units",
     },
 ];
+</script> -->
+
+<script setup>
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+
+const dialog = ref(false);
+const selectedItem = ref(null);
+const dataKendaraan = ref([]);
+const dataShelter = ref([]);
+
+const openDialog = (index) => {
+    selectedItem.value = dataKendaraan.value[index];
+    dialog.value = true;
+};
+
+const closeDialog = () => {
+    dialog.value = false;
+};
+
+onMounted(async () => {
+    try {
+        const responseKendaraan = await axios.get('http://localhost:3000/api/dataKendaraan');
+        dataKendaraan.value = responseKendaraan.data;
+
+        const responseShelter = await axios.get('http://localhost:3000/api/dataShelter');
+        dataShelter.value = responseShelter.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+});
+
 </script>
 
-<style>
-.my-custom-border {
-    border: 1px solid #B71C1C;
-}
-</style>
-
 <script>
-import ChartPeminjaman from "./ChartPeminjaman.vue";
+import ChartPeminjaman from '@/components/ChartPeminjaman.vue';
 
 export default {
     components: {
@@ -173,3 +199,9 @@ export default {
     },
 };
 </script>
+
+<style>
+.my-custom-border {
+    border: 1px solid #B71C1C;
+}
+</style>

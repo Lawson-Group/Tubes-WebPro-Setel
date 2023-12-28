@@ -141,18 +141,19 @@
     },
   },
   loadItems() {
-    const filteredItems = this.items.filter(item => {
-      const lowerSearch = this.search.toLowerCase();
-      const usernameMatch = item.username.toLowerCase().includes(lowerSearch);
-      const nimMatch = item.nim.toLowerCase().includes(lowerSearch);
-
-      return usernameMatch || nimMatch;
-    });
-
-    this.totalItems = filteredItems.length;
-    this.loading = false;
+    this.loading = true;
+    this.$axios
+      .get('http://localhost:3000/api/feedback')
+      .then((response) => {
+        this.items = response.data;
+        this.loading = false;
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        this.loading = false;
+      });
   },
-};
+}
 </script>
 
 <style scoped>

@@ -35,6 +35,7 @@
                 <tr class="text-center">
                     <td>{{ item.nomorUnit }}</td>
                     <td>{{ item.jenisKendaraan }}</td>
+                    <td>{{ item.shelter }}</td>
                     <td>{{ item.status }}</td>
                     <td>
                         <button @click="editItem(index)" style="padding-right: 10%;">
@@ -54,6 +55,7 @@
                 <v-card-text>
                     <v-text-field v-model="newItem.nomorUnit" label="Nomor Unit"></v-text-field>
                     <v-select v-model="newItem.jenisKendaraan" :items="['Sepeda', 'Skuter']" label="Jenis Kendaraan"></v-select>
+                    <v-select v-model="newItem.shelter" :items="['TULT', 'GKU', 'Open Library', 'MSU']" label="Shelter"></v-select>
                     <v-select v-model="newItem.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
                 </v-card-text>
                 <v-card-actions>
@@ -71,6 +73,7 @@
                 <v-card-text>
                     <v-text-field v-model="editItemData.nomorUnit" label="Nomor Unit"></v-text-field>
                     <v-select v-model="editItemData.jenisKendaraan" :items="['Sepeda', 'Skuter']" label="Jenis Kendaraan"></v-select>
+                    <v-select v-model="editItemData.shelter" :items="['TULT', 'GKU', 'Open Library', 'MSU']" label="Shelter"></v-select>
                     <v-select v-model="editItemData.status" :items="['Available', 'Unavailable']" label="Status"></v-select>
                 </v-card-text>
                 <v-card-actions>
@@ -98,16 +101,16 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                items: [
-                { nomorUnit: 'A001', jenisKendaraan: 'Sepeda', status: 'Available' },
-                { nomorUnit: 'B002', jenisKendaraan: 'Skuter', status: 'Unavailable' }
-            ],
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            items: [],
             headers: [
                 { title: 'Nomor Unit', key: 'nomorUnit', align: 'center' },
-                { title: 'Jenis Kendaraan', key: 'jenisKendaraan', align: 'center'},
+                { title: 'Jenis Kendaraan', key: 'jenisKendaraan', align: 'center' },
+                { title: 'Shelter', key: 'shelter', align: 'center' },
                 { title: 'Status', key: 'status', align: 'center' },
                 { title: 'Aksi', key: 'actions', align: 'center', sortable: false },
             ],
@@ -123,46 +126,113 @@
             showDelete: false,
             newItem: {
                 nomorUnit: '',
-                jenisKendaraan: 'Sepeda',
-                status: 'Available'
+                jenisKendaraan: '',
+                shelter: '',
+                status: '',
             },
             editItemIndex: -1,
             editItemData: {
                 nomorUnit: '',
-                jenisKendaraan: 'Sepeda',
-                status: 'Available'
+                jenisKendaraan: '',
+                shelter: '',
+                status: '',
             },
-            deleteItemIndex: -1
+            deleteItemIndex: -1,
+        };
+    },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        fetchData() {
+        // Make API view items
+        axios.get(`http://localhost:3000/api/kendaraan`)
+            .then(response => {
+                this.items = response.data;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    },
+    showAddModal() {
+        this.showAdd = true;
+    },
+    addItem() {
+        // Validasi nomor unit
+        if (!this.validateNomorUnit()) {
+            return;
+        }
+
+        // Make API call to check if the nomor unit already exists
+        axios.post(`http://localhost:3000/api/kendaraan`, this.newItem)
+            .then(() => {
+            // If successful, update the local data and close the modal
+            this.items.push({ ...this.newItem });
+            this.showAdd = false;
+            // Reset newItem for the next entry
+            this.newItem = {
+                nomorUnit: '',
+                jenisKendaraan: '',
+                shelter: '',
+                status: '',
+            };
+            })
+            .catch(error => {
+            if (error.response && error.response.status === 409) {
+                // Nomor unit sudah terdaftar, berikan pemberitahuan
+                alert('Nomor unit sudah terdaftar!');
+            } else {
+                console.error('Error adding item:', error);
             }
+        });
+    },
+    validateNomorUnit() {
+        const jenisKendaraanPrefix = this.newItem.jenisKendaraan === 'Sepeda' ? 'A' : 'B';
+        const nomorUnitPattern = new RegExp(`^${jenisKendaraanPrefix}[0-9]{3}$`);
+
+        if (!nomorUnitPattern.test(this.newItem.nomorUnit)) {
+            alert('Nomor unit tidak valid!');
+            return false;
+        }
+
+        return true;
         },
-        methods: {
-            showAddModal() {
-                this.showAdd = true;
-            },
-            addItem() {
-                this.items.push({ ...this.newItem });
-                this.showAdd = false;
-            },
-            editItem(index) {
-                this.editItemIndex = index;
-                this.editItemData = { ...this.items[index] };
-                this.showEdit = true;
-            },
-            saveEdit() {
+        editItem(index) {
+        this.editItemIndex = index;
+        this.editItemData = { ...this.items[index] };
+        this.showEdit = true;
+    },
+    saveEdit() {
+    // Make API call to save edits on an item
+        axios.put(`http://localhost:3000/api/kendaraan/${this.editItemData.id}`, this.editItemData)
+            .then(() => {
                 this.items[this.editItemIndex] = { ...this.editItemData };
                 this.showEdit = false;
-            },
-            confirmDelete(index) {
-                this.deleteItemIndex = index;
-                this.showDelete = true;
-            },
-            deleteItem() {
-                this.items.splice(this.deleteItemIndex, 1);
-                this.showDelete = false;
-            },
-            cancelDelete() {
-                this.showDelete = false;
-            }
-        }
-    }
+            })
+            .catch(error => {
+                console.error('Error saving edit:', error);
+            });
+        },
+        confirmDelete(index) {
+        this.deleteItemIndex = index;
+        this.showDelete = true;
+    },
+    deleteItem() {
+        const itemId = this.items[this.deleteItemIndex].id;
+
+        // Make API call to delete an item
+        axios.delete(`http://localhost:3000/api/kendaraan/${itemId}`)
+            .then(() => {
+            this.items.splice(this.deleteItemIndex, 1);
+            this.showDelete = false;
+            })
+            .catch(error => {
+            console.error('Error deleting item:', error);
+            });
+    },
+    cancelDelete() {
+        this.showDelete = false;
+    },
+    },
+};
 </script>
