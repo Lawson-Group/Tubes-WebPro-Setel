@@ -1,97 +1,71 @@
 <template>
     <div>
-        <v-select v-model="selectedMonth" :items="months" label="Select Month" @change="updateChartData"></v-select>
-        <Bar :data="chartData" />
+        <canvas ref="myChart"></canvas>
     </div>
 </template>
-    
-<script>
-import {
-BarElement,
-CategoryScale,
-Chart as ChartJS,
-Legend,
-LinearScale,
-Title,
-Tooltip,
-} from "chart.js";
-import { Bar } from "vue-chartjs";
 
-ChartJS.register(
-    Title,
-    Tooltip,
-    Legend,
-    BarElement,
-    CategoryScale,
-    LinearScale
-);
+<script>
+import axios from "axios";
+import Chart from "chart.js/auto";
 
 export default {
-    name: "ChartPeminjaman",
-    components: { Bar },
     data() {
         return {
-            selectedMonth: "January",
-            months: [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December",
-            ],
-            chartData: {
-                labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-                datasets: [
-                    {
-                        label: "Sepeda",
-                        backgroundColor: "#B71C1C",
-                        data: this.generateRandomData(),
-                    },
-                    {
-                        label: "Skuter",
-                        backgroundColor: "#424242",
-                        data: this.generateRandomData(),
-                    },
-                ],
-            },
+            peminjamanData: [],
         };
     },
+    mounted() {
+        this.getDataFromAPI();
+    },
     methods: {
-        generateRandomData() {
-            return [
-                Math.random() * 30,
-                Math.random() * 30,
-                Math.random() * 30,
-                Math.random() * 30,
-            ];
+        async getDataFromAPI() {
+            try {
+                const response = await axios.get("http://localhost:3000/api/report");
+                this.peminjamanData = response.data;
+                this.generateChart();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         },
-        updateChartData() {
-            // Call generateRandomData to get new random data
-            const newData = {
-                labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-                datasets: [
-                    {
-                        label: "Sepeda",
-                        backgroundColor: "#B71C1C",
-                        data: this.generateRandomData(),
-                    },
-                    {
-                        label: "Skuter",
-                        backgroundColor: "#424242",
-                        data: this.generateRandomData(),
-                    },
-                ],
-            };
+        generateChart() {
+            const sepedaCount = this.peminjamanData.filter(
+                (item) => item.jenisKendaraan === "Sepeda"
+            ).length;
 
-            // Update chartData
-            this.chartData = newData;
+            const skuterCount = this.peminjamanData.filter(
+                (item) => item.jenisKendaraan === "Sekuter"
+            ).length;
+
+            const ctx = this.$refs.myChart.getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["Kendaraan"],
+                    datasets: [
+                        {
+                            label: "Sepeda",
+                            data: [sepedaCount],
+                            backgroundColor: "rgba(183,	28,	28)",
+                            borderWidth: 1,
+                        },
+                        {
+                            label: "Skuter",
+                            data: [skuterCount],
+                            backgroundColor: "rgba(66, 66, 66)",
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            precision: 0,
+                        },
+                    },
+                },
+            });
         },
     },
 };

@@ -82,7 +82,7 @@ app.get("/api/dataShelter", (req, res) => {
 // Section Inventory
 // API endpoint to fetch all vehicles from the database
 app.get('/api/kendaraan', (req, res) => {
-  const query = 'SELECT * FROM Kendaraan';
+  const query = 'SELECT * FROM Kendaraan';  
   connection.query(query, (err, results) => {
     if (err) {
       console.error('Error executing query:', err);

@@ -51,11 +51,9 @@ CREATE TABLE IF NOT EXISTS Informasi (
 
 INSERT INTO Informasi (title, amount, titleDetails, unitSepeda, unitSkuter, imageSource)
 VALUES
-    ('Peminjaman', '200 units', 'Jumlah Peminjaman Kendaraan', 'Sepeda 100 units', 'Skuter 100 units', 'ride-dbp.png'),
-    ('Kendaraan', '400 units', 'Jumlah Kendaraan Tersedia', 'Sepeda 200 units', 'Skuter 200 units', 'vehicle-dbp.png'),
-    ('Maintenance', '20 units', 'Jumlah Kendaraan Diperbaiki', 'Sepeda 10 units', 'Skuter 10 units', 'maintenance-dbp.png');
-
-
+    ('Peminjaman', '', 'Jumlah Peminjaman Kendaraan', '', '', 'ride-dbp.png'),
+    ('Kendaraan', '', 'Jumlah Kendaraan Tersedia', '', '', 'vehicle-dbp.png'),
+    ('Maintenance', '', 'Jumlah Kendaraan Diperbaiki', '', '', 'maintenance-dbp.png');
 
 /* Table Shelter - Dashboard Page */
 CREATE TABLE IF NOT EXISTS Shelter (
@@ -69,10 +67,10 @@ CREATE TABLE IF NOT EXISTS Shelter (
 
 INSERT INTO Shelter (title, title2, shelter, alt, unit)
 VALUES
-    ('Shelter TULT', 'Gedung Telkom University Landmark Tower', 'tult.jpg', 'shelter_1', 'Tersedia 50 units'),
-    ('Shelter GKU', 'Gedung Tokong Nanas', 'gku.jpg', 'shelter_2', 'Tersedia 50 units'),
-    ('Shelter Oplib', 'Gedung Open Library', 'oplib.jpg', 'shelter 3', 'Tersedia 50 units'),
-    ('Shelter MSU', 'Masjid Syamsul ''Ulum', 'msu.jpg', 'shelter_4', 'Tersedia 50 units');
+    ('Shelter TULT', 'Gedung Telkom University Landmark Tower', 'tult.jpg', 'shelter_1', ''),
+    ('Shelter GKU', 'Gedung Tokong Nanas', 'gku.jpg', 'shelter_2', ''),
+    ('Shelter Oplib', 'Gedung Open Library', 'oplib.jpg', 'shelter 3', ''),
+    ('Shelter MSU', 'Masjid Syamsul ''Ulum', 'msu.jpg', 'shelter_4', '');
 
 
 /* Table Report-ReportPage*/
@@ -94,7 +92,7 @@ INSERT INTO Report (username, tgl_wkt, noUnit, jenisKendaraan, shelterAwal, shel
 INSERT INTO Report (username, tgl_wkt, noUnit, jenisKendaraan, shelterAwal, shelterAkhir) VALUES ('Novis','2023-10-17 10:12:59','B003','Sekuter', 'GKU', 'OPLIB');
 INSERT INTO Report (username, tgl_wkt, noUnit, jenisKendaraan, shelterAwal, shelterAkhir) VALUES ('Rohmah','2023-10-15 07:32:44','A003','Sepeda', 'MSU', 'OPLIB');
 INSERT INTO Report (username, tgl_wkt, noUnit, jenisKendaraan, shelterAwal, shelterAkhir) VALUES ('Putri','2023-10-16 09:41:20','B002','Sekuter', 'GKU', 'MSU');
-INSERT INTO Report (username, tgl_wkt, noUnit, jenisKendaraan, shelterAwal, shelterAkhir) VALUES ('Himeko','2023-10-17 10:12:59','A006','Sepeda', 'MSU', 'TULT');
+INSERT INTO Report (username, tgl_wkt, noUnit, jenisKendaraan, shelterAwal, shelterAkhir) VALUES ('Himeko','2023-10-17 10:12:59','A006','Sepeda', 'MSU', 'TULT');
 
 
 /* Tabel Feedback - FeedbackPage*/
