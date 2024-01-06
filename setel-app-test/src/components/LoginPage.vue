@@ -32,7 +32,7 @@
             <v-btn :disabled="!form" :loading="loading" block color="red-darken-4" size="large" type="submit" variant="elevated">
               Login
             </v-btn>
-          </v-form>
+          </v-form> 
         </v-card>
       </v-col>
     </v-row>

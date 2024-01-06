@@ -25,26 +25,35 @@ connection.connect((err) => {
 });
 
 // Section Landing
-
-
+app.get("/api/shelter", (req, res) => {
+  const query = "SELECT title, shelter FROM Shelter";
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error querying database for shelter:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(results);
+    }
+  });
+});
 
 // Section login
 app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
-  
-    try {
-        const [rows, fields] = await connection.promise().execute('SELECT * FROM Admin WHERE usr = ? AND pwd = ?', [username, password]);
-      
-        if (rows && (rows.length > 0 || (fields && fields.affectedRows > 0))) {
-          res.json({ success: true });
-        } else {
-          res.json({ success: false });
-        }
-      } catch (error) {
-        console.error('Error executing query:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+  const { username, password } = req.body;
+
+  try {
+      const [rows, fields] = await connection.promise().execute('SELECT * FROM Admin WHERE usr = ? AND pwd = ?', [username, password]);
+    
+      if (rows && (rows.length > 0 || (fields && fields.affectedRows > 0))) {
+        res.json({ success: true });
+      } else {
+        res.json({ success: false });
       }
-  });
+    } catch (err) {
+      console.error('Error querying database for admins:', err);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
 
   
 // Section Dashboard
